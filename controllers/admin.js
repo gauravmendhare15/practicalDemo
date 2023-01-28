@@ -11,14 +11,14 @@ exports.createAdmin = async (req, res) => {
         //check emailAlready exists in system 
         let checkEmail = await User.findOne({ email: req.body.email.toLowerCase() })
         if (checkEmail)
-            res.send(helpers.error("Email Already Exists Please try another email", {}))
+            return res.send(helpers.error("Email Already Exists Please try another email", {}))
 
         let newAdmin = new User(req.body)
-        newAdmin.role = UserRoleConstant.Admin
+        newAdmin.role = UserRoleConstant.Member
         newAdmin.password = helpers.bcryptHash(req.body.password)
         await newAdmin.save()
         res.send(helpers.success("Admin created successfully", newAdmin))
-
+        return
     } catch (error) {
         console.log(error)
         helpers.error("internal server error", error.message)
@@ -27,7 +27,7 @@ exports.createAdmin = async (req, res) => {
 
 exports.login = async (req, res) => {
     try {
-        let user = await User.findOne({ email: req.body.userName, role: UserRoleConstant.Admin }).select("fname lname email role password").lean();
+        let user = await User.findOne({ email: req.body.userName }).select("fname lname email role password").lean();
         if (!user) res.send(helpers.error("userName not existed", {}))
 
         let passwordCheck = await helpers.bcryptCompare(req.body.password, user.password)

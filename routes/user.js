@@ -9,20 +9,46 @@ const UserController = require("../controllers/userController")
 
 
 /**
- * create a new admin role
- * fname:string
- * lname:string
- * email:string
- * password:string
+ * @typedef UserCreateModel
+ * @property {string} fname.required
+ * @property {string} lname.required
+ * @property {string} email.required
+ * @property {string} password.required
  */
-router.post("/create/Admin", validate("body", adminSchema.createAdmin), AdminController.createAdmin)
+
 
 /**
- * login a admin
- * userName:string
- * password:string
+ * User Login
+ * @route POST /user/create
+ * @param {UserCreateModel.model} data.body.required - user login object
+ * @group User - User operation
+ * @returns {object} 200 -
+ *      Return Jwt Token in key result.token
+ *
+ * @returns {Error}  Error - Unexpected error
  */
-router.post("/login/Admin", validate("body", adminSchema.login), AdminController.login);
+router.post("/create", validate("body", adminSchema.createAdmin), AdminController.createAdmin)
+
+
+/**
+ * @typedef UserLogin
+ * @property {string} userName.required
+ * @property {string} password.required
+ */
+
+
+/**
+ * User Login
+ * @route POST /user/login
+ * @param {UserLogin.model} data.body.required - user login object
+ * @group User - User operation
+ * @returns {object} 200 -
+ *      Return Jwt Token in key result.token
+ *
+ * @returns {Error}  Error - Unexpected error
+ */
+
+router.post("/login", validate("body", adminSchema.login), AdminController.login);
 
 /**
  * get the user list

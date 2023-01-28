@@ -8,7 +8,7 @@ exports.auth = async (req, res, next) => {
         if (!token) return res.send(helper.error('Access denied. Token not found.', {}, 401))
         jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
             if (err) return res.send(helper.error('Access denied.', {}, 401))
-            res.user = decoded;
+            req.user = decoded;
             next();
         })
 

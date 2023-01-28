@@ -23,6 +23,7 @@ app.get('/health', (req, res) => {
 
 // Routes
 require('./loaders/express')(app)
+require("./loaders/swagger")(app)
 
 // Plugins
 // require('./loaders/swagger')(app)
